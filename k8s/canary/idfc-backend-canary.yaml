@@ -1,0 +1,46 @@
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: idfc-backend-canary
+  labels:
+    app: idfc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: idfc
+      tier: backend
+      env: canary
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: idfc
+        tier: backend
+        env: canary
+    spec:
+      imagePullSecrets:
+        - name: regcred
+      containers:
+      - image: synpulse.jfrog.io/s8-docker/idfc-backend:latest
+        env:
+          - name: SECRET_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: db-user-pass
+                key: username
+                optional: true # same as default; "mysecret" must exist
+                                # and include a key named "username"
+          - name: SECRET_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: db-user-pass
+                key: password
+                optional: true # same as default; "mysecret" must exist
+                                # and include a key named "password"
+        name: idfc
+        ports:
+        - containerPort: 8080
+          name: idfc-backend
+        imagePullPolicy: Always

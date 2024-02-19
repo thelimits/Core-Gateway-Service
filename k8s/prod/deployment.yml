@@ -1,0 +1,19 @@
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: ${REPLACE_APP_NAME}
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  template:
+    spec:
+      imagePullSecrets:
+      - name: ${REPLACE_APP_NAME}-registry-credential
+      containers:
+      - image: ${REPLACE_IMAGE_TAG}
+        name: ${REPLACE_APP_NAME}
+        ports:
+        - containerPort: 8080 # defines which port is EXPOSED from this image. Your app MUST be running on this port.
+          name: deployment-port
+        imagePullPolicy: Always

@@ -1,0 +1,13 @@
+spring:
+  kafka:
+    bootstrap-servers: kafka.kafka-v2-demo.seahorse.tmachine.io:9092
+    consumer:
+      group-id: demo-service-backend-dev
+      auto-offset-reset: latest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      properties:
+        max.block.ms: 30000
+    producer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer

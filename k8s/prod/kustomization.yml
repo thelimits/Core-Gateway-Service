@@ -1,0 +1,16 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+commonLabels:
+  app: ${REPLACE_APP_NAME}
+  tier: backend
+  env: prod
+
+commonAnnotations:
+  git-repo: ${REPLACE_REPO}
+  git-ref-branch: ${REPLACE_BRANCH_NAME}
+  git-commit: ${REPLACE_COMMIT_SHA}
+
+resources:
+- deployment.yml
+- service-ingress.yml
